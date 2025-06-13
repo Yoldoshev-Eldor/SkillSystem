@@ -1,32 +1,66 @@
-# Prerequisites
-*.d
+# Ignore all bin/ and obj/ folders recursively
+**/[Bb]in/
+**/[Oo]bj/
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Don't ignore solution or project files
+# (Remove these lines to keep them in Git)
+# **/*.csproj
+# **/*.sln
 
-# Precompiled Headers
-*.gch
-*.pch
+# Ignore user-specific and IDE-related files recursively
+**/*.user
+**/*.suo
+**/*.vspx
+**/*.vsmdi
+.vs/
+.vscode/
+.idea/
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Ignore packages, build artifacts and NuGet outputs
+packages/
+**/packages/
+**/*.nupkg
+**/artifacts/
 
-# Fortran module files
-*.mod
-*.smod
+# Ignore test results
+TestResults/
+**/*.trx
+**/*.coverage
+**/*.testsettings
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# Ignore local DB files
+**/*.db
+**/*.sqlite
+**/*.sqlite3
 
-# Executables
-*.exe
-*.out
-*.app
+# Ignore design and media files
+Design/
+**/*.psd
+**/*.ai
+**/*.xd
+
+# Ignore Xamarin/MAUI/Android/iOS output files
+**/*.apk
+**/*.aab
+**/*.ipa
+**/*.dll
+**/*.pdb
+**/*.so
+**/*.jar
+**/*.dex
+
+# Ignore temp, backup, and system files
+**/*~
+**/*.tmp
+**/*.bak
+**/*.swp
+**/*.swo
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Ignore environment and config secrets
+.env
+.env.*
+secrets.json
+appsettings.*.local.json
