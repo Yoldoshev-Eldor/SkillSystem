@@ -1,0 +1,6 @@
+@SkillSystem.Api_HostAddress = http://localhost:5022
+
+GET {{SkillSystem.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
