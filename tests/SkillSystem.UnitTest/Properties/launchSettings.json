@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SkillSystem.UnitTest (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "SkillSystem.UnitTest (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
