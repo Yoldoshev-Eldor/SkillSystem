@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SkillSystem.Domain.Repositories;
 
-namespace SkillSystem.Domain.Repositories
+using Microsoft.Azure.Search.Models;
+using SkillSystem.Domain.Entities;
+
+public interface ISkillRepository
 {
-    internal interface ISkillRepository
-    {
-    }
+    Task AddAsync(Skill skill, CancellationToken cancellationToken);
 }

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+namespace SkillSystem.Domain.Abstractions;
 
-namespace SkillSystem.Domain.Abstractions
+public interface IDateTimeProvider  
 {
-    internal interface IDateTimeProvider
-    {
-    }
+    DateTime UtcNow { get; } 
 }

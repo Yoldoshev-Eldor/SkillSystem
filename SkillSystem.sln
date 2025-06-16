@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{02EA681E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillSystem.UnitTest", "tests\SkillSystem.UnitTest\SkillSystem.UnitTest.csproj", "{CF1717EB-CB2F-4703-A89B-BFDC906180C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillSystem.Core", "SkillSystem.Core\SkillSystem.Core.csproj", "{979F88F4-B783-4C18-8BE8-B22B21ABE97F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{CF1717EB-CB2F-4703-A89B-BFDC906180C5}.Release|Any CPU.ActiveCfg = Release|x64
 		{CF1717EB-CB2F-4703-A89B-BFDC906180C5}.Release|Any CPU.Build.0 = Release|x64
 		{CF1717EB-CB2F-4703-A89B-BFDC906180C5}.Release|Any CPU.Deploy.0 = Release|x64
+		{979F88F4-B783-4C18-8BE8-B22B21ABE97F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{979F88F4-B783-4C18-8BE8-B22B21ABE97F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{979F88F4-B783-4C18-8BE8-B22B21ABE97F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{979F88F4-B783-4C18-8BE8-B22B21ABE97F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
