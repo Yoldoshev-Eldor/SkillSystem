@@ -12,6 +12,8 @@ namespace SkillSystem.Api
             // Add services to the container.
 
             builder.ConfigureDatabase();
+            builder.ConfigurationJwtAuth();
+            builder.RegisterServices();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
