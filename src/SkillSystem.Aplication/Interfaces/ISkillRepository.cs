@@ -7,6 +7,6 @@ public interface ISkillRepository
     Task<long> InsertAsync(Skill skill);
     Task DeleteByIdAsync(long skillId, long userId);
     Task<Skill> SelectByIdAsync(long skillId, long userId);
-    Task<ICollection<Skill>> SelectAll();
+    Task<ICollection<Skill>> SelectAll(long userId);
     Task UpdateAsync(Skill skill);
 }

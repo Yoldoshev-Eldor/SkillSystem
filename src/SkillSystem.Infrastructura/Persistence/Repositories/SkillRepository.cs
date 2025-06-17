@@ -27,9 +27,9 @@ public class SkillRepository : ISkillRepository
         return skill.SkillId;
     }
 
-    public async Task<ICollection<Skill>> SelectAll()
+    public async Task<ICollection<Skill>> SelectAll(long userId)
     {
-        return await mainContext.Skills
+        return await mainContext.Skills.Where(s => s.UserId == userId)
             .AsNoTracking()
             .ToListAsync();
     }
