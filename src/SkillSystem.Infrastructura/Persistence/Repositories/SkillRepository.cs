@@ -40,8 +40,10 @@ public class SkillRepository : ISkillRepository
         return skill;
     }
 
-    public Task UpdateAsync(Skill skill)
+    public async Task UpdateAsync(Skill skill)
     {
-        
+        await SelectByIdAsync(skill.SkillId, skill.UserId);
+        mainContext.Skills.Update(skill);
+        await mainContext.SaveChangesAsync();
     }
 }
