@@ -1,4 +1,6 @@
 
+using SkillSystem.Api.Configurations;
+
 namespace SkillSystem.Api
 {
     public class Program
@@ -8,6 +10,8 @@ namespace SkillSystem.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            builder.ConfigureDatabase();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
