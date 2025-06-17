@@ -14,6 +14,4 @@ public class SkillGetDto
     public SkillLevelDto Level { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
-    public long UserId { get; set; }
-    public string? UserFullName { get; set; }
 }
