@@ -5,14 +5,23 @@ namespace SkillSystem.Infrastructura.Persistence.Repositories;
 
 public class SkillRepository : ISkillRepository
 {
+    private readonly MainContext mainContext;
+
+    public SkillRepository(MainContext mainContext)
+    {
+        this.mainContext = mainContext;
+    }
+
     public Task DeleteByIdAsync(long skillId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<long> InsertAsync(Skill skill)
+    public async Task<long> InsertAsync(Skill skill)
     {
-        throw new NotImplementedException();
+        await mainContext.Skills.AddAsync(skill);
+        await mainContext.SaveChangesAsync();
+        return skill.SkillId;
     }
 
     public Task<ICollection<Skill>> SelectAll()
