@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkillSystem.Aplication.Dtos
+namespace SkillSystem.Aplication.Dtos;
+
+public class SkillUpdateDto
 {
-    internal class SkillUpdateDto
-    {
-    }
+    public long SkillId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public SkillLevelDto Level { get; set; } = SkillLevelDto.NotSet;
 }
