@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SkillSystem.Aplication\SkillSystem.Aplication.csproj" />
     <ProjectReference Include="..\SkillSystem.Domain\SkillSystem.Domain.csproj" />
   </ItemGroup>
 
