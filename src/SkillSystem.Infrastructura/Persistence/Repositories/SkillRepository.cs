@@ -13,9 +13,11 @@ public class SkillRepository : ISkillRepository
         this.mainContext = mainContext;
     }
 
-    public Task DeleteByIdAsync(long skillId)
+    public async Task DeleteByIdAsync(long skillId, long userId)
     {
-        
+        var skill = await SelectByIdAsync(skillId, userId);
+        mainContext.Skills.Remove(skill);
+        await mainContext.SaveChangesAsync();
     }
 
     public async Task<long> InsertAsync(Skill skill)
@@ -30,9 +32,12 @@ public class SkillRepository : ISkillRepository
         throw new NotImplementedException();
     }
 
-    public Task<Skill> SelectByIdAsync(long skillId)
+    public async Task<Skill> SelectByIdAsync(long skillId, long userId)
     {
-        
+        Skill skill = await mainContext.Skills.FirstOrDefaultAsync(s => s.SkillId == skillId && s.UserId == userId)
+            ?? throw new KeyNotFoundException($"Skill with ID {skillId} not found or it does not belong to user with Id: {userId}");
+
+        return skill;
     }
 
     public Task UpdateAsync(Skill skill)
