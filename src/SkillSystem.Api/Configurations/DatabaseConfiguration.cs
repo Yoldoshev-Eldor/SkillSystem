@@ -4,7 +4,7 @@ using System;
 
 namespace SkillSystem.Api.Configurations
 {
-    public static class DatabaseConfigurations
+    public static class DatabaseConfiguration
     {
         public static void ConfigureDatabase(this WebApplicationBuilder builder)
         {
