@@ -27,9 +27,11 @@ public class SkillRepository : ISkillRepository
         return skill.SkillId;
     }
 
-    public Task<ICollection<Skill>> SelectAll()
+    public async Task<ICollection<Skill>> SelectAll()
     {
-        throw new NotImplementedException();
+        return await mainContext.Skills
+            .AsNoTracking()
+            .ToListAsync();
     }
 
     public async Task<Skill> SelectByIdAsync(long skillId, long userId)
