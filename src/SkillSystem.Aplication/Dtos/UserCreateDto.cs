@@ -1,12 +1,19 @@
-﻿using System;
+﻿using SkillSystem.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkillSystem.Aplication.Dtos
+namespace SkillSystem.Aplication.Dtos;
+
+public class UserCreateDto
 {
-    internal class UserCreateDto
-    {
-    }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string UserName { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
+    public string PhoneNumber { get; set; }
+
 }
