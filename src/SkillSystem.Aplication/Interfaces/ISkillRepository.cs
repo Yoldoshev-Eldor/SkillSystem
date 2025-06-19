@@ -5,8 +5,8 @@ namespace SkillSystem.Aplication.Interfaces;
 public interface ISkillRepository
 {
     Task<long> InsertAsync(Skill skill);
-    Task DeleteByIdAsync(long skillId, long userId);
-    Task<Skill> SelectByIdAsync(long skillId, long userId);
+    Task DeleteByIdAsync(long skillId);
+    Task<Skill?> SelectByIdAsync(long skillId);
     Task<ICollection<Skill>> SelectAll(long userId);
     Task UpdateAsync(Skill skill);
 }
