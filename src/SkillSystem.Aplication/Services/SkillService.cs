@@ -29,25 +29,43 @@ public class SkillService : ISkillService
     }
     public async Task DeleteAsync(long skillId)
     {
-        var skill=await _skillRepository.SelectByIdAsync(skillId);
+        var skill = await _skillRepository.SelectByIdAsync(skillId);
         await _skillRepository.DeleteByIdAsync(skillId);
 
     }
+    public async Task<ICollection<SkillGetDto>> GetSkillsAsync(int skip, int take)
+    {
+        var skills = await _skillRepository.SelectSkillsAsync(skip, take);
 
+        var skillDtos = skills.Select(s => MapService.MapSkillToSkillGetDto(s)).ToList();
+        return skillDtos;
+
+    }
     public ICollection<SkillGetDto> GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public Task<SkillGetDto> GetByIdAsync(long skillId)
+
+    public async Task<SkillGetDto> GetByIdAsync(long skillId)
     {
-        throw new NotImplementedException();
+        var skill = await _skillRepository.SelectByIdAsync(skillId);
+        var skillDto = MapService.MapSkillToSkillGetDto(skill);
+        return skillDto;
     }
 
 
 
-    public Task UpdateAsync(SkillUpdateDto skillUpdateDto)
+    public async Task UpdateAsync(SkillUpdateDto skillUpdateDto)
     {
-        throw new NotImplementedException();
+        var validationResult = _skillUpdateDtoValidator.Validate(skillUpdateDto);
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationException(validationResult.Errors);
+        }
+        var skill = MapService.MapSkillUpdateDtoToSkill(skillUpdateDto);
+        await _skillRepository.UpdateAsync(skill);
     }
+
+
 }

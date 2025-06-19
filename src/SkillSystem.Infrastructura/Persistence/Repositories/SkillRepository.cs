@@ -44,6 +44,16 @@ public class SkillRepository : ISkillRepository
         return skill;
     }
 
+    public async Task<ICollection<Skill>> SelectSkillsAsync(int skip, int take)
+    {
+        var skills = await mainContext.Skills
+            .Skip(skip)
+            .Take(take)
+            .ToListAsync();
+
+        return skills;
+    }
+
     public async Task UpdateAsync(Skill skill)
     {
         await SelectByIdAsync(skill.SkillId);
