@@ -1,5 +1,6 @@
 
 using SkillSystem.Api.Configurations;
+using SkillSystem.Api.Endpoints;
 
 namespace SkillSystem.Api
 {
@@ -13,7 +14,7 @@ namespace SkillSystem.Api
 
             builder.ConfigureDatabase();
             builder.ConfigurationJwtAuth();
-            builder.RegisterServices();
+            builder.Configure();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -35,6 +36,7 @@ namespace SkillSystem.Api
 
 
             app.MapControllers();
+            app.MapSkillEndpoints();
 
             app.Run();
         }
