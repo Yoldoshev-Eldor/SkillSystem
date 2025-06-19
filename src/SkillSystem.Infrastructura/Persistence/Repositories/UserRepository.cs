@@ -1,46 +1,88 @@
-﻿using SkillSystem.Aplication.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using SkillSystem.Aplication.Interfaces;
 using SkillSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SkillSystem.Domain.Errors;
 
 namespace SkillSystem.Infrastructura.Persistence.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    public Task DeleteAsync(long userId)
+    private readonly MainContext _mainContext;
+    public UserRepository(MainContext mainContext)
     {
-        throw new NotImplementedException();
+        _mainContext = mainContext;
     }
 
-    public Task<long> InsertAsync(User user)
+    public async Task<long> InsertAsync(User user)
     {
-        throw new NotImplementedException();
+        await _mainContext.Users.AddAsync(user);
+        await _mainContext.SaveChangesAsync();
+        return user.UserId;
     }
 
-    public IQueryable<User> SelectAll()
+    public async Task DeleteAsync(long userId)
     {
-        throw new NotImplementedException();
+        var user = await SelectByIdAsync(userId);
+        _mainContext.Remove(user);
+        await _mainContext.SaveChangesAsync();
     }
 
-    public Task<ICollection<User>> SelectAllAsync(int skip, int take)
+
+    public IQueryable<User> SelectAll()=> _mainContext.Users.AsQueryable();
+
+
+    public async Task<PagedResult<User>> SelectAllAsync(int skip, int take)
     {
-        throw new NotImplementedException();
+        var totalCount = await _mainContext.Users.CountAsync();
+
+        var users = await _mainContext.Users
+            .OrderBy(u => u.UserId)
+            .Skip(skip)
+            .Take(take)
+            .ToListAsync();
+
+        return new PagedResult<User>
+        {
+            TotalCount = totalCount,
+            Data = users
+        };
+
     }
 
-    public Task<User?> SelectByIdAsync(long userId)
+    public async Task<User?> SelectByIdAsync(long userId)
     {
-        throw new NotImplementedException();
+        var user = await _mainContext.Users.FirstOrDefaultAsync(x => x.UserId == userId);
+        if (user == null)
+        {
+            throw new EntityNotFoundException();
+        }
+        return user;
     }
 
-    public Task<User?> SelectByUserNameAsync(string userName)
+    public async Task<User?> SelectByUserNameAsync(string userName)
     {
-        throw new NotImplementedException();
+        var user = await _mainContext.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+        if (user == null)
+        {
+            throw new EntityNotFoundException();
+        }
+        return user;
     }
 
-    public Task UpdateUserRoleAsync(long userId, string role)
+    public async Task UpdateUserRoleAsync(long userId, Role role)
+    {
+        var user = await SelectByIdAsync(userId);
+        var userRole = user.Role;
+        if (user == null)
+        {
+            throw new EntityNotFoundException();
+        }
+        user.Role = role;
+        _mainContext.Update(user);
+        await _mainContext.SaveChangesAsync();
+    }
+
+    public Task<ICollection<User>> SelectAllUserAsync(int skip, int take)
     {
         throw new NotImplementedException();
     }
