@@ -18,7 +18,7 @@ public static class SkillEndpoints
                 return skillId;
 
             })
-            .WithTags("CreateSkill")
+            .WithName("CreateSkill")
             .Produces(200)
             .Produces(404);
 
@@ -27,7 +27,7 @@ public static class SkillEndpoints
             {
                 await skilService.DeleteAsync(skillId);
             })
-            .WithTags("DeleteSkill")
+            .WithName("DeleteSkill")
             .Produces(200)
             .Produces(404);
 
@@ -37,7 +37,7 @@ public static class SkillEndpoints
                 var skill = await skillService.GetByIdAsync(skillId);
                 return skill;
             })
-            .WithTags("GetSkillById")
+            .WithName("GetSkillById")
             .Produces<SkillGetDto>(200)
             .Produces(404);
 
@@ -47,7 +47,7 @@ public static class SkillEndpoints
                 var skills = skillService.GetAll();
                 return skills;
             })
-            .WithTags("GetAllSkills")
+            .WithName("GetAllSkills")
             .Produces(200)
             .Produces(404);
 
@@ -57,7 +57,7 @@ public static class SkillEndpoints
                 var skills = await skillService.GetSkillsAsync(skip, take);
                 return skills;
             })
-            .WithTags("GetSkills")
+            .WithName("GetSkills")
             .Produces(200)
             .Produces(404);
 
@@ -66,7 +66,7 @@ public static class SkillEndpoints
             {
                 await skillService.UpdateAsync(skillUpdateDto);
             })
-            .WithTags("UpdateSkill")
+            .WithName("UpdateSkill")
             .Produces(200)
             .Produces(404);
     }
