@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36203.30
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillSystem.Api", "src\SkillSystem.Api\SkillSystem.Api.csproj", "{EEEA8688-2B29-40FD-8FCF-DD9B5D9DF7EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillSystem.Api", "src\SkillSystem.Api\SkillSystem.Api.csproj", "{EEEA8688-2B29-40FD-8FCF-DD9B5D9DF7EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillSystem.Aplication", "src\SkillSystem.Aplication\SkillSystem.Aplication.csproj", "{FEACF7A0-73B2-46B8-A3CD-FDDD0637C96C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillSystem.Aplication", "src\SkillSystem.Aplication\SkillSystem.Aplication.csproj", "{FEACF7A0-73B2-46B8-A3CD-FDDD0637C96C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillSystem.Domain", "src\SkillSystem.Domain\SkillSystem.Domain.csproj", "{BE4FD7E4-2FBA-4166-8BBC-BD8DEE937290}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillSystem.Domain", "src\SkillSystem.Domain\SkillSystem.Domain.csproj", "{BE4FD7E4-2FBA-4166-8BBC-BD8DEE937290}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillSystem.Infrastructura", "src\SkillSystem.Infrastructura\SkillSystem.Infrastructura.csproj", "{538AFDD1-A77E-4851-9E03-E77ECBA9781B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillSystem.Core", "src\SkillSystem.Core\SkillSystem.Core.csproj", "{54432CC7-DCEC-4A63-AB62-986CCD0A23D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillSystem.Infrastructura", "src\SkillSystem.Infrastructura\SkillSystem.Infrastructura.csproj", "{538AFDD1-A77E-4851-9E03-E77ECBA9781B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +33,6 @@ Global
 		{538AFDD1-A77E-4851-9E03-E77ECBA9781B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{538AFDD1-A77E-4851-9E03-E77ECBA9781B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{538AFDD1-A77E-4851-9E03-E77ECBA9781B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{54432CC7-DCEC-4A63-AB62-986CCD0A23D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{54432CC7-DCEC-4A63-AB62-986CCD0A23D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{54432CC7-DCEC-4A63-AB62-986CCD0A23D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{54432CC7-DCEC-4A63-AB62-986CCD0A23D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
