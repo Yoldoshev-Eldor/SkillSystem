@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SkillSystem.Aplication.Interfaces;
-using SkillSystem.Core.Errors;
 using SkillSystem.Domain.Entities;
+using SkillSystem.Domain.Errors;
 
 namespace SkillSystem.Infrastructura.Persistence.Repositories;
 
