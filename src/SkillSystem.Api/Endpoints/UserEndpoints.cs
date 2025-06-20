@@ -29,14 +29,7 @@ public static class UserEndpoints
         })
         .WithName("CreateUser")
         .Produces<long>(StatusCodes.Status201Created);
-        group.MapPut("/{id:long}", async (long id, UserUpdateDto userUpdateDto, IUserService userService) =>
-        {
-            userUpdateDto.UserId = id;
-            await userService.UpdateAsync(userUpdateDto);
-            return Results.NoContent();
-        })
-        .WithName("UpdateUser")
-        .Produces(StatusCodes.Status204NoContent);
+       
         group.MapDelete("/{id:long}", async (long id, IUserService userService) =>
         {
             var user = await userService.GetByIdAsync(id);
