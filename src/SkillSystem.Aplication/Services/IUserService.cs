@@ -11,4 +11,5 @@ public interface IUserService
     Task<PagedResult<UserGetDto>> GetAllAsync(int skip, int take);
     ICollection<UserGetDto> GetAll();
     Task UpdateAsync(UserUpdateDto userUpdateDto);
+    Task DeleteAsync(UserGetDto user);
 }
