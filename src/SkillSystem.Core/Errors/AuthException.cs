@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+using SkillSystem.Domain.Errors;
+using System.Runtime.Serialization;
 
 namespace SkillSystem.Core.Errors;
 
@@ -7,7 +8,7 @@ namespace SkillSystem.Core.Errors;
 public class AuthException : BaseException
 {
     public AuthException() { }
-    public AuthException(String message) : base(message) { }
-    public AuthException(String message, Exception inner) : base(message, inner) { }
+    public AuthException(string message) : base(message) { }
+    public AuthException(string message, Exception inner) : base(message, inner) { }
     protected AuthException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 }

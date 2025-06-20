@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace SkillSystem.Domain.Errors;
+namespace SkillSystem.Core.Errors;
 
 [Serializable]
 public class RemoteServerProcessingException : BaseException

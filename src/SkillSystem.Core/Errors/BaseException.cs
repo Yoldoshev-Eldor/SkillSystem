@@ -1,11 +1,8 @@
-﻿
 using System.Runtime.Serialization;
-
 
 namespace SkillSystem.Core.Errors;
 
 [Serializable]
-
 public class BaseException : Exception
 {
     public BaseException() { }

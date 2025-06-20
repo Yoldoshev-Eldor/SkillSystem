@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SkillSystem.Aplication.Interfaces;
+using SkillSystem.Core.Errors;
 using SkillSystem.Domain.Entities;
 
 namespace SkillSystem.Infrastructura.Persistence.Repositories;
@@ -15,7 +16,7 @@ public class SkillRepository : ISkillRepository
 
     public async Task DeleteByIdAsync(long skillId)
     {
-        var skill = await SelectByIdAsync(skillId);
+        var skill = await SelectByIdAsync(skillId) ?? throw new NotFoundException($"Skill with ID {skillId} not found.");
         mainContext.Skills.Remove(skill);
         await mainContext.SaveChangesAsync();
     }
@@ -34,13 +35,9 @@ public class SkillRepository : ISkillRepository
             .ToListAsync();
     }
 
-    public async Task<Skill> SelectByIdAsync(long skillId)
+    public async Task<Skill?> SelectByIdAsync(long skillId)
     {
-        var skill = await mainContext.Skills.FirstOrDefaultAsync(s => s.SkillId == skillId);
-        if (skill == null)
-        {
-            throw new KeyNotFoundException($"Skill with ID {skillId} not found.");
-        }
+        var skill = await mainContext.Skills.FirstOrDefaultAsync(s => s.SkillId == skillId) ?? throw new NotFoundException($"Skill with ID {skillId} not found.");
         return skill;
     }
 

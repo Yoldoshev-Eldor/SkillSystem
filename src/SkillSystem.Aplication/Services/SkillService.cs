@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using SkillSystem.Aplication.Dtos;
 using SkillSystem.Aplication.Interfaces;
+using SkillSystem.Core.Errors;
 
 namespace SkillSystem.Aplication.Services;
 
@@ -16,6 +17,7 @@ public class SkillService : ISkillService
         _skillCreateDtoValidator = skillCreateDtoValidator;
         _skillUpdateDtoValidator = skillUpdateDtoValidator;
     }
+
     public async Task<long> PostAsync(SkillCreateDto skillCreateDto)
     {
         var validationResult = _skillCreateDtoValidator.Validate(skillCreateDto);
@@ -27,12 +29,14 @@ public class SkillService : ISkillService
         await _skillRepository.InsertAsync(skill);
         return skill.SkillId;
     }
+
     public async Task DeleteAsync(long skillId)
     {
-        var skill = await _skillRepository.SelectByIdAsync(skillId);
+        _ = await _skillRepository.SelectByIdAsync(skillId) ?? throw new NotFoundException($"Skill with ID {skillId} not found.");
         await _skillRepository.DeleteByIdAsync(skillId);
 
     }
+
     public async Task<ICollection<SkillGetDto>> GetSkillsAsync(int skip, int take)
     {
         var skills = await _skillRepository.SelectSkillsAsync(skip, take);
@@ -41,20 +45,18 @@ public class SkillService : ISkillService
         return skillDtos;
 
     }
+
     public ICollection<SkillGetDto> GetAll()
     {
         throw new NotImplementedException();
     }
 
-
     public async Task<SkillGetDto> GetByIdAsync(long skillId)
     {
-        var skill = await _skillRepository.SelectByIdAsync(skillId);
+        var skill = await _skillRepository.SelectByIdAsync(skillId) ?? throw new NotFoundException($"Skill with ID {skillId} not found.");
         var skillDto = MapService.MapSkillToSkillGetDto(skill);
         return skillDto;
     }
-
-
 
     public async Task UpdateAsync(SkillUpdateDto skillUpdateDto)
     {
@@ -66,6 +68,4 @@ public class SkillService : ISkillService
         var skill = MapService.MapSkillUpdateDtoToSkill(skillUpdateDto);
         await _skillRepository.UpdateAsync(skill);
     }
-
-
 }

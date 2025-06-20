@@ -1,6 +1,5 @@
 ﻿using System.Runtime.Serialization;
 
-
 namespace SkillSystem.Core.Errors;
 
 public class UnauthorizedException : BaseException
