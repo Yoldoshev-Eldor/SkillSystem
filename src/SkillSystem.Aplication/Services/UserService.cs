@@ -1,7 +1,10 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using SkillSystem.Aplication.Dtos;
+using SkillSystem.Aplication.Helpers.Security;
 using SkillSystem.Aplication.Interfaces;
 using SkillSystem.Domain.Entities;
+using SkillSystem.Domain.Errors;
 
 namespace SkillSystem.Aplication.Services;
 
@@ -9,17 +12,40 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly IValidator<UserCreateDto> _userCreateDtoValidator;
+
     public UserService(IUserRepository repository, IValidator<UserCreateDto> validator)
     {
         _userRepository = repository;
         _userCreateDtoValidator = validator;
     }
-    public Task<long> CreateAsync(UserCreateDto userCreateDto)
+
+    public async Task<long> CreateAsync(UserCreateDto userCreateDto)
+    {
+        var validationResult = await _userCreateDtoValidator.ValidateAsync(userCreateDto);
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationException(validationResult.Errors);
+        }
+
+        var existingUser = await _userRepository.SelectByUserNameAsync(userCreateDto.UserName);
+        if (existingUser != null)
+        {
+            throw new InvalidOperationException($"User with username '{userCreateDto.UserName}' already exists.");
+        }
+
+        var salt = PasswordHasher.Hasher(userCreateDto.Password).Salt;
+        var hashedPassword = PasswordHasher.Hasher(userCreateDto.Password).Hash;
+        var user = MapService.MapUserCreateDtoToUser(userCreateDto, hashedPassword, salt);
+        var userId = await _userRepository.InsertAsync(user);
+        return userId;
+    }
+
+    public Task DeleteAsync(User user)
     {
         throw new NotImplementedException();
     }
 
-    public Task DeleteAsync(User user)
+    public Task DeleteAsync(UserGetDto user)
     {
         throw new NotImplementedException();
     }
@@ -34,13 +60,15 @@ public class UserService : IUserService
         throw new NotImplementedException();
     }
 
-    public Task<UserGetDto> GetByIdAsync(long userId)
+    public async Task<UserGetDto> GetByIdAsync(long userId)
     {
-        throw new NotImplementedException();
-    }
+        var user = await _userRepository.SelectByIdAsync(userId);
+        if (user == null)
+        {
+            throw new EntityNotFoundException($"User with ID {userId} not found.");
+        }
 
-    public Task UpdateAsync(UserUpdateDto userUpdateDto)
-    {
-        throw new NotImplementedException();
+        var userDto = MapService.MapUserToUserDto(user);
+        return userDto;
     }
 }
