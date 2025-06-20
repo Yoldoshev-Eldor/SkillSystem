@@ -1,4 +1,5 @@
-﻿using SkillSystem.Domain.Entities;
+﻿using SkillSystem.Aplication.Dtos;
+using SkillSystem.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
