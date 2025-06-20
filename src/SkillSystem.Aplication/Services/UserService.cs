@@ -1,10 +1,19 @@
-﻿using SkillSystem.Aplication.Dtos;
+﻿using FluentValidation;
+using SkillSystem.Aplication.Dtos;
+using SkillSystem.Aplication.Interfaces;
 using SkillSystem.Domain.Entities;
 
 namespace SkillSystem.Aplication.Services;
 
 public class UserService : IUserService
 {
+    private readonly IUserRepository _userRepository;
+    private readonly IValidator<UserCreateDto> _userCreateDtoValidator;
+    public UserService(IUserRepository repository, IValidator<UserCreateDto> validator)
+    {
+        _userRepository = repository;
+        _userCreateDtoValidator = validator;
+    }
     public Task<long> CreateAsync(UserCreateDto userCreateDto)
     {
         throw new NotImplementedException();
