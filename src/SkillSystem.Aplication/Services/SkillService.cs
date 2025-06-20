@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using SkillSystem.Aplication.Dtos;
 using SkillSystem.Aplication.Interfaces;
-using SkillSystem.Core.Errors;
+using SkillSystem.Domain.Errors;
 
 namespace SkillSystem.Aplication.Services;
 
