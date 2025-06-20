@@ -10,7 +10,7 @@ namespace SkillSystem.Api.Configurations
 {
     public static class DependencyInjectionConfiguration
     {
-        public static void Configure(this WebApplicationBuilder builder)
+        public static void ConfigureServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddScoped<ISkillRepository, SkillRepository>();
             builder.Services.AddScoped<ISkillService, SkillService>();
@@ -24,10 +24,10 @@ namespace SkillSystem.Api.Configurations
             builder.Services.AddScoped<IValidator<UserCreateDto>, UserCreateDtoValidator>();
             builder.Services.AddScoped<IValidator<UserUpdateDto>, UserUpdateDtoValidator>();
 
-            //builder.Services.AddScoped<IAuthService, AuthService>();
-            //builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
 
-            //builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             //builder.Services.AddScoped<IUserRoleRepository, RoleRepository>();
             //builder.Services.AddScoped<IUserRoleService, UserRoleService>();
 
