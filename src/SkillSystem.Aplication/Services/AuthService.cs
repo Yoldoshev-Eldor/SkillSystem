@@ -2,8 +2,8 @@
 using SkillSystem.Aplication.Helpers;
 using SkillSystem.Aplication.Helpers.Security;
 using SkillSystem.Aplication.Interfaces;
-using SkillSystem.Core.Errors;
 using SkillSystem.Domain.Entities;
+using SkillSystem.Domain.Errors;
 using System.Security.Claims;
 
 namespace SkillSystem.Aplication.Services;
@@ -29,7 +29,7 @@ public class AuthService : IAuthService
 
         var checkUserPassword = PasswordHasher.Verify(userLoginDto.Password, user.Password, user.Salt);
 
-        if (checkUserPassword == false)
+        if (!checkUserPassword)
         {
             throw new UnauthorizedException("UserName or password incorrect");
         }
@@ -56,7 +56,7 @@ public class AuthService : IAuthService
             UserId = user.UserId
         };
 
-        await RefreshTokenRepository.AddRefreshTokenAsync(refreshTokenToDB);
+        await RefreshTokenRepository.InsertRefreshTokenAsync(refreshTokenToDB);
 
         var loginResponseDto = new LogInResponseDto()
         {
@@ -115,7 +115,7 @@ public class AuthService : IAuthService
             UserId = user.UserId
         };
 
-        await RefreshTokenRepository.AddRefreshTokenAsync(refreshTokenToDB);
+        await RefreshTokenRepository.InsertRefreshTokenAsync(refreshTokenToDB);
 
         return new LogInResponseDto
         {
