@@ -6,8 +6,7 @@ using SkillSystem.Aplication.Services;
 using SkillSystem.Aplication.Validators.UserValidator;
 using SkillSystem.Application.FluentValidation;
 using SkillSystem.Infrastructura.Persistence.Repositories;
-using ITokenService = SkillSystem.Aplication.Services.ITokenService;
-using TokenService = SkillSystem.Aplication.Services.TokenService;
+
 
 namespace SkillSystem.Api.Configurations
 {

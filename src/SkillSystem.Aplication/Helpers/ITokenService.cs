@@ -5,7 +5,8 @@ namespace SkillSystem.Aplication.Helpers;
 
 public interface ITokenService
 {
-    public string GenerateTokent(UserGetDto user);
+    public string GenerateToken(UserGetDto userDto);
     string GenerateRefreshToken();
     ClaimsPrincipal? GetPrincipalFromExpiredToken(string token);
+    public string RemoveRefreshTokenAsync(string token);
 }

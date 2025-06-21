@@ -10,44 +10,34 @@ namespace SkillSystem.Aplication.Helpers;
 
 public class TokenService : ITokenService
 {
-    private readonly IConfiguration _config;
+    private IConfiguration Configuration;
 
     public TokenService(IConfiguration configuration)
     {
-        _config = configuration.GetSection("Jwt");
+        Configuration = configuration.GetSection("Jwt");
     }
 
-    public string GenerateRefreshToken()
+    public string GenerateToken(UserGetDto user)
     {
-        var randomBytes = new byte[64];
-        using RandomNumberGenerator rng = RandomNumberGenerator.Create();
-        rng.GetBytes(randomBytes);
-        return Convert.ToBase64String(randomBytes);
-    }
-
-    public string GenerateTokent(UserGetDto user)
-    {
-        var identityClaims = new Claim[]
+        var IdentityClaims = new Claim[]
         {
-            new Claim("UserId",user.UserId.ToString()),
-            new Claim("FirstName",user.FirstName.ToString()),
-            new Claim("LastName",user.LastName.ToString()),
-            new Claim("PhoneNumber",user.PhoneNumber.ToString()),
-            new Claim("UserName",user.UserName.ToString()),
-            new Claim(ClaimTypes.Role,user.Role.ToString()),
-            new Claim(ClaimTypes.Email,user.Email.ToString())
+         new Claim("UserId",user.UserId.ToString()),
+         new Claim("FirstName",user.FirstName.ToString()),
+         new Claim("LastName",user.LastName.ToString()),
+         new Claim("PhoneNumber",user.PhoneNumber.ToString()),
+         new Claim("UserName",user.UserName.ToString()),
+         new Claim(ClaimTypes.Role, user.Role.ToString()),
+         new Claim(ClaimTypes.Email,user.Email.ToString())
         };
 
-        SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["SecurityKey"]!));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecurityKey"]!));
+        var keyCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        SigningCredentials keyCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        int expiresHours = int.Parse(_config["LifeTime"]);
-
-        JwtSecurityToken token = new JwtSecurityToken(
-            issuer: _config["Issuer"],
-            audience: _config["Audience"],
-            claims: identityClaims,
+        var expiresHours = int.Parse(Configuration["Lifetime"]);
+        var token = new JwtSecurityToken(
+            issuer: Configuration["Issuer"],
+            audience: Configuration["Audience"],
+            claims: IdentityClaims,
             expires: TimeHelper.GetDateTime().AddHours(expiresHours),
             signingCredentials: keyCredentials
             );
@@ -55,20 +45,33 @@ public class TokenService : ITokenService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
+    public string GenerateRefreshToken()
+    {
+        var randomBytes = new byte[64];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomBytes);
+        return Convert.ToBase64String(randomBytes);
+    }
+
     public ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
     {
-        var tokenValidationParameters = new TokenValidationParameters()
+        var tokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = _config["Issuer"],
+            ValidIssuer = Configuration["Issuer"],
             ValidateAudience = true,
-            ValidAudience = _config["Audience"],
-            ValidateLifetime = true,
+            ValidAudience = Configuration["Audience"],
+            ValidateLifetime = false,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["SecurityKey"]!))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecurityKey"]!))
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
         return tokenHandler.ValidateToken(token, tokenValidationParameters, out _);
+    }
+
+    public string RemoveRefreshTokenAsync(string token)
+    {
+        throw new NotImplementedException("This method is not implemented ");
     }
 }
