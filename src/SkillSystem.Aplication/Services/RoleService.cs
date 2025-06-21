@@ -1,5 +1,6 @@
 ﻿using SkillSystem.Aplication.Dtos;
 using SkillSystem.Aplication.Interfaces;
+using SkillSystem.Domain.Entities;
 using SkillSystem.Domain.Errors;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,15 @@ public class RoleService : IRoleService
     {
         _roleRepository = roleRepository;
         _userRepository = userRepository;
+    }
+    public async Task<long> InsertRoleAsync(UserRoleCreateDto roleDto)
+    {
+        var role = new UserRole
+        {
+            RoleName = roleDto.RoleName,
+            Description = roleDto.Description
+        };
+        return await _roleRepository.InsertRole(role);
     }
 
     public async Task<List<UserRoleDto>> GetAllRolesAsync()
@@ -42,13 +52,29 @@ public class RoleService : IRoleService
         return userDtos;
     }
 
-    public Task<long> GetRoleIdAsync(string role)
+    public async Task<UserRoleDto> GetRoleIdAsync(long roleId)
     {
-        var res = _roleRepository.GetRoleIdAsync(role);
+        var res = _roleRepository.GetRoleIdAsync(roleId);
         if (res is null)
         {
-            throw new EntityNotFoundException(role);
+            throw new EntityNotFoundException();
         }
-        return res;
+        var roleDto=new UserRoleDto
+        {
+            RoleId = res.Result.RoleId,
+            RoleName = res.Result.RoleName,
+            Description = res.Result.Description
+        };
+        return roleDto;
+
+    }
+    public async Task DeleteAsync(long roleId)
+    {
+        var role = await _roleRepository.GetRoleIdAsync(roleId);
+        if (role is null)
+        {
+            throw new EntityNotFoundException($"Role with ID {roleId} not found.");
+        }
+        await _roleRepository.DeleteAsync(roleId);
     }
 }

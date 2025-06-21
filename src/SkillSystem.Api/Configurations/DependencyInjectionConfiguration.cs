@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using SkillSystem.Aplication.Dtos;
+using SkillSystem.Aplication.FluentValidation;
 using SkillSystem.Aplication.Helpers;
 using SkillSystem.Aplication.Interfaces;
 using SkillSystem.Aplication.Services;
-using SkillSystem.Aplication.Validators.UserValidator;
 using SkillSystem.Application.FluentValidation;
 using SkillSystem.Infrastructura.Persistence.Repositories;
 
@@ -26,7 +26,7 @@ namespace SkillSystem.Api.Configurations
             builder.Services.AddScoped<IValidator<UserCreateDto>, UserCreateDtoValidator>();
             builder.Services.AddScoped<IValidator<UserUpdateDto>, UserUpdateDtoValidator>();
 
-            builder.Services.AddScoped<IValidator<UserLogInDto>, UserLoginValidators>();
+            builder.Services.AddScoped<IValidator<UserLogInDto>, UserLogInValidators>();
 
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();

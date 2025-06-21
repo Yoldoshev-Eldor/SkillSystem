@@ -10,8 +10,6 @@ public class User
     public string Password { get; set; }
     public string PhoneNumber { get; set; }
     public string Salt { get; set; }
-
-    //public Role Role { get; set; }
     public long RoleId { get; set; }
     public UserRole UserRole { get; set; }
 

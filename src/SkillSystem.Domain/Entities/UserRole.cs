@@ -10,6 +10,6 @@ public class UserRole
 {
     public long RoleId { get; set; }
     public string RoleName { get; set; } = string.Empty;
-    public string? Decscription { get; set; }
+    public string Description { get; set; }
     public ICollection<User> Users { get; set; }
 }
