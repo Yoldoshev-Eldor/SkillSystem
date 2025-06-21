@@ -52,7 +52,7 @@ public static class MapService
             UserName = user.UserName,
             Email = user.Email,
             PhoneNumber = user.PhoneNumber,
-            Role = user.Role,
+            Role = user.UserRole,
         };
     }
     public static User MapUserCreateDtoToUser(UserCreateDto userCreateDto, string hashedPassword, string salt)

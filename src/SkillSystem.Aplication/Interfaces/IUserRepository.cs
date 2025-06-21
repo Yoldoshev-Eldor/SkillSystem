@@ -12,7 +12,7 @@ public interface IUserRepository
 {
     Task<long> InsertAsync(User user);
     Task DeleteAsync(long userId);
-    Task UpdateUserRoleAsync(long userId, Role role);
+    Task UpdateUserRoleAsync(long userId, UserRole role);
     Task<User?> SelectByIdAsync(long userId);
     Task<User?> SelectByUserNameAsync(string userName);
     Task<ICollection<User>> SelectAllUserAsync(int skip, int take);

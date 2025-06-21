@@ -15,7 +15,7 @@ public class UserGetDto
     public string UserName { get; set; }
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
-    public Role Role { get; set; }
+    public UserRole Role { get; set; }
 
     public ICollection<SkillGetDto> Skills { get; set; }
 }

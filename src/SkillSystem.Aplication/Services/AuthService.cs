@@ -1,5 +1,5 @@
-﻿using SkillSystem.Aplication.Dtos;
-using SkillSystem.Aplication.Helpers;
+﻿using FluentValidation;
+using SkillSystem.Aplication.Dtos;
 using SkillSystem.Aplication.Helpers.Security;
 using SkillSystem.Aplication.Interfaces;
 using SkillSystem.Domain.Entities;
@@ -10,124 +10,32 @@ namespace SkillSystem.Aplication.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly IUserRepository UserRepository;
-    private readonly IRefreshTokenRepository RefreshTokenRepository;
-    private readonly ITokenService TokenService;
+    private readonly IUserRepository _userRepository;
+    private readonly IRefreshTokenRepository _refreshTokenRepository;
+    private readonly ITokenService _tokenService;
+    private readonly IValidator<UserLogInDto> _userLoginValidator;
+    private readonly IValidator<UserCreateDto> _userCreateValidators;
+    private readonly IRoleRepository _roleRepository;
 
 
-
-    public AuthService(ITokenService tokenService, IUserRepository userRepository, IRefreshTokenRepository refreshTokenRepository)
+    public AuthService(IRoleRepository roleRepository,IValidator<UserCreateDto> userCreateValidator, IValidator<UserLogInDto> validator, ITokenService tokenService, IUserRepository userRepository, IRefreshTokenRepository refreshTokenRepository)
     {
-        TokenService = tokenService;
-        UserRepository = userRepository;
-        RefreshTokenRepository = refreshTokenRepository;
+        _tokenService = tokenService;
+        _userRepository = userRepository;
+        _refreshTokenRepository = refreshTokenRepository;
+        _userLoginValidator = validator;
+        _userCreateValidators = userCreateValidator;
+        _roleRepository = roleRepository;
+
     }
-
-    public async Task<LogInResponseDto> LoginUserAsync(UserCreateDto userLoginDto)
+    public async Task<long> SignUpAsync(UserCreateDto userCreateDto)
     {
-        var user = await UserRepository.SelectByUserNameAsync(userLoginDto.UserName);
-
-        var checkUserPassword = PasswordHasher.Verify(userLoginDto.Password, user.Password, user.Salt);
-
-        if (!checkUserPassword)
+        var validationResult = await _userCreateValidators.ValidateAsync(userCreateDto);
+        if (!validationResult.IsValid)
         {
-            throw new UnauthorizedException("UserName or password incorrect");
+            throw new ValidationException(validationResult.Errors);
         }
 
-        var userGetDto = new UserGetDto()
-        {
-            UserId = user.UserId,
-            UserName = user.UserName,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Email = user.Email,
-            PhoneNumber = user.PhoneNumber,
-            Role = (Role)RoleDto.User,
-        };
-
-        var token = TokenService.GenerateTokent(userGetDto);
-        var refreshToken = TokenService.GenerateRefreshToken();
-
-        var refreshTokenToDB = new RefreshToken()
-        {
-            Token = refreshToken,
-            Expires = DateTime.UtcNow.AddDays(21),
-            IsRevoked = false,
-            UserId = user.UserId
-        };
-
-        await RefreshTokenRepository.InsertRefreshTokenAsync(refreshTokenToDB);
-
-        var loginResponseDto = new LogInResponseDto()
-        {
-            AccessToken = token,
-            RefreshToken = refreshToken,
-            TokenType = "Bearer",
-            Expires = 24
-        };
-
-
-        return loginResponseDto;
-    }
-
-    public async Task LogOutAsync(string token)
-    {
-        await RefreshTokenRepository.RemoveRefreshTokenAsync(token);
-    }
-
-    public async Task<LogInResponseDto> RefreshTokenAsync(RefreshRequestDto request)
-    {
-        ClaimsPrincipal? principal = TokenService.GetPrincipalFromExpiredToken(request.AccessToken);
-        if (principal == null) throw new ForbiddenException("Invalid access token.");
-
-
-        var userClaim = principal.FindFirst(c => c.Type == "UserId");
-        var userId = long.Parse(userClaim.Value);
-
-
-        var refreshToken = await RefreshTokenRepository.SelectRefreshTokenAsync(request.RefreshToken, userId);
-        if (refreshToken == null || refreshToken.Expires < DateTime.UtcNow || refreshToken.IsRevoked)
-            throw new UnauthorizedException("Invalid or expired refresh token.");
-
-        refreshToken.IsRevoked = true;
-
-        var user = await UserRepository.SelectByIdAsync(userId);
-
-        var userGetDto = new UserGetDto()
-        {
-            UserId = user.UserId,
-            UserName = user.UserName,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Email = user.Email,
-            PhoneNumber = user.PhoneNumber,
-            Role = (Role)RoleDto.User
-        };
-
-        var newAccessToken = TokenService.GenerateTokent(userGetDto);
-        var newRefreshToken = TokenService.GenerateRefreshToken();
-
-        var refreshTokenToDB = new RefreshToken()
-        {
-            Token = newRefreshToken,
-            Expires = DateTime.UtcNow.AddDays(21),
-            IsRevoked = false,
-            UserId = user.UserId
-        };
-
-        await RefreshTokenRepository.InsertRefreshTokenAsync(refreshTokenToDB);
-
-        return new LogInResponseDto
-        {
-            AccessToken = newAccessToken,
-            RefreshToken = newRefreshToken,
-            TokenType = "Bearer",
-            Expires = 900
-        };
-    }
-
-    public async Task<long> SignUpUserAsync(UserCreateDto userCreateDto)
-    {
         var tupleFromHasher = PasswordHasher.Hasher(userCreateDto.Password);
         var user = new User()
         {
@@ -138,9 +46,91 @@ public class AuthService : IAuthService
             PhoneNumber = userCreateDto.PhoneNumber,
             Password = tupleFromHasher.Hash,
             Salt = tupleFromHasher.Salt,
-            Role = (Role)RoleDto.User,
+        };
+        user.RoleId = await _roleRepository.GetRoleIdAsync("User");
+        return await _userRepository.InsertAsync(user);
+    }
+    public async Task<LogInResponseDto> LogInAsync(UserLogInDto userLoginDto)
+    {
+        var user = await _userRepository.SelectByUserNameAsync(userLoginDto.UserName);
+        var checkpassword = PasswordHasher.Verify(userLoginDto.Password, user.Password, user.Salt);
+        if (user is null || !checkpassword)
+        {
+            throw new UnauthorizedAccessException("Invalid username or password");
+        }
+        var validationResult = await _userLoginValidator.ValidateAsync(userLoginDto);
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationException(validationResult.Errors);
+        }
+        var userDto = MapService.MapUserToUserDto(user);
+        var accessToken = _tokenService.GenerateToken(userDto);
+        var refreshToken = _tokenService.GenerateRefreshToken();
+        var refreshTokenToDB = new RefreshToken()
+        {
+            Token = refreshToken,
+            Expires = DateTime.UtcNow.AddDays(21),
+            IsRevoked = false,
+            UserId = user.UserId
+        };
+        await _refreshTokenRepository.InsertRefreshTokenAsync(refreshTokenToDB);
+
+        return new LogInResponseDto()
+        {
+            AccessToken = accessToken,
+            RefreshToken = refreshToken,
+            TokenType = "Bearer",
+            Expires = 24,
         };
 
-        return await UserRepository.InsertAsync(user);
+    }
+
+
+    public async Task LogOutAsync(string token)
+    {
+        await _refreshTokenRepository.RemoveRefreshTokenAsync(token);
+    }
+
+    public async Task<LogInResponseDto> RefreshTokenAsync(RefreshRequestDto request)
+    {
+        ClaimsPrincipal? principal = _tokenService.GetPrincipalFromExpiredToken(request.AccessToken);
+        if (principal == null) throw new ForbiddenException("Invalid access token.");
+
+
+        var userClaim = principal.FindFirst(c => c.Type == "UserId");
+        var userId = long.Parse(userClaim.Value);
+
+
+        var refreshToken = await _refreshTokenRepository.SelectRefreshTokenAsync(request.RefreshToken, userId);
+        if (refreshToken == null || refreshToken.Expires < DateTime.UtcNow || refreshToken.IsRevoked)
+            throw new UnauthorizedException("Invalid or expired refresh token.");
+
+        refreshToken.IsRevoked = true;
+
+        var user = await _userRepository.SelectByIdAsync(userId);
+
+        var userGetDto = MapService.MapUserToUserDto(user);
+
+
+        var newAccessToken = _tokenService.GenerateToken(userGetDto);
+        var newRefreshToken = _tokenService.GenerateRefreshToken();
+
+        var refreshTokenToDB = new RefreshToken()
+        {
+            Token = newRefreshToken,
+            Expires = DateTime.UtcNow.AddDays(21),
+            IsRevoked = false,
+            UserId = user.UserId
+        };
+
+        await _refreshTokenRepository.InsertRefreshTokenAsync(refreshTokenToDB);
+
+        return new LogInResponseDto
+        {
+            AccessToken = newAccessToken,
+            RefreshToken = newRefreshToken,
+            TokenType = "Bearer",
+            Expires = 24
+        };
     }
 }

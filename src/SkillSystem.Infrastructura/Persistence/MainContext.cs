@@ -14,6 +14,8 @@ public class MainContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Skill> Skills { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<UserRole>Roles { get; set; }
+   
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
