@@ -22,6 +22,18 @@ public static class UserEndpoints
         .WithName("GetUserById")
         .Produces<UserGetDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
-       
+
+        group.MapGet("/{username}", async (string username, IUserService userService) =>
+        {
+            var user = await userService.GetByUserNameAsync(username);
+            if (user == null)
+            {
+                return Results.NotFound();
+            }
+            return Results.Ok(user);
+        })
+          .WithName("GetUserByUserName")
+          .Produces<UserGetDto>(StatusCodes.Status200OK)
+          .Produces(StatusCodes.Status404NotFound);
     }
 }

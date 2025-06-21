@@ -11,4 +11,6 @@ public interface IUserService
     Task<PagedResult<UserGetDto>> GetAllAsync(int skip, int take);
     ICollection<UserGetDto> GetAll();
     Task DeleteAsync(UserGetDto user);
+
+    Task<UserGetDto> GetByUserNameAsync(string userName);
 }
