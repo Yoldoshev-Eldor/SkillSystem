@@ -42,7 +42,9 @@ namespace SkillSystem.Api
 
             app.MapControllers();
             app.MapUserEndpoints();
+            app.MapAuthEndpoints();
             app.MapSkillEndpoints();
+
 
             app.Run();
         }
