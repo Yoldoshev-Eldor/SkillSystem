@@ -40,9 +40,9 @@ namespace SkillSystem.Api
             app.UseAuthorization();
 
 
-            app.MapControllers();
-            app.MapUserEndpoints();
+            app.MapControllers();           
             app.MapAuthEndpoints();
+            app.MapAdminEndpoints();
             app.MapSkillEndpoints();
 
 
