@@ -39,12 +39,12 @@ public static class AuthEndpoints
 
     public static async Task<IResult> SignUp(UserCreateDto user, IAuthService _service)
     {
-        return Results.Ok(await _service.SignUpUserAsync(user));
+        return Results.Ok(await _service.SignUpAsync(user));
     }
 
-    public static async Task<IResult> SignIn(UserCreateDto user, IAuthService _service)
+    public static async Task<IResult> SignIn(UserLogInDto userLogInDto, IAuthService _service)
     {
-        return Results.Ok(await _service.LoginUserAsync(user));
+        return Results.Ok(await _service.LogInAsync(userLogInDto));
     }
 
     public static async Task<IResult> RefreshToken(RefreshRequestDto refresh, IAuthService _service)
