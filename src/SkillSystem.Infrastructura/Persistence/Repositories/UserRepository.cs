@@ -65,7 +65,7 @@ public class UserRepository : IUserRepository
     public async Task UpdateUserRoleAsync(long userId, UserRole role)
     {
         var user = await SelectByIdAsync(userId) ?? throw new EntityNotFoundException($"User with ID {userId} not found");
-        user.Role = role;
+        user.URole = role;
         _mainContext.Update(user);
         await _mainContext.SaveChangesAsync();
     }
