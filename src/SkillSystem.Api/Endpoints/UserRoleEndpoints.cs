@@ -12,7 +12,7 @@ public static class UserRoleEndpoints
             .RequireAuthorization()
             .WithTags("Roles");
 
-        roleGroup.MapPost("/insert role", [Authorize(Roles = "Admin,SuperAdmin")]
+        roleGroup.MapPost("/insert-role", [Authorize(Roles = "Admin,SuperAdmin")]
         async (UserRoleCreateDto roleDto, IRoleService roleService) =>
             {
                 var roleId = await roleService.InsertRoleAsync(roleDto);
@@ -22,7 +22,7 @@ public static class UserRoleEndpoints
             .Produces(200)
             .Produces(400);
 
-        roleGroup.MapGet("/get all roles", [Authorize(Roles = "Admin,SuperAdmin")]
+        roleGroup.MapGet("/get-all-roles", [Authorize(Roles = "Admin,SuperAdmin")]
         async (IRoleService roleService) =>
             {
                 var roles = await roleService.GetAllRolesAsync();
@@ -32,7 +32,7 @@ public static class UserRoleEndpoints
             .Produces(200)
             .Produces(400);
 
-        roleGroup.MapGet("/get all users by role", [Authorize(Roles = "Admin,SuperAdmin")]
+        roleGroup.MapGet("/get-all-users-by-role", [Authorize(Roles = "Admin,SuperAdmin")]
         async (string role, IRoleService roleService) =>
         {
             var users = await roleService.GetAllUsersByRoleAsync(role);
