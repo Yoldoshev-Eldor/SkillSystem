@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using SkillSystem.Aplication.Dtos;
+using SkillSystem.Aplication.Helpers;
 using SkillSystem.Aplication.Helpers.Security;
 using SkillSystem.Aplication.Interfaces;
 using SkillSystem.Domain.Entities;
@@ -18,7 +19,7 @@ public class AuthService : IAuthService
     private readonly IRoleRepository _roleRepository;
 
 
-    public AuthService(IRoleRepository roleRepository,IValidator<UserCreateDto> userCreateValidator, IValidator<UserLogInDto> validator, ITokenService tokenService, IUserRepository userRepository, IRefreshTokenRepository refreshTokenRepository)
+    public AuthService(IRoleRepository roleRepository, IValidator<UserCreateDto> userCreateValidator, IValidator<UserLogInDto> validator, ITokenService tokenService, IUserRepository userRepository, IRefreshTokenRepository refreshTokenRepository)
     {
         _tokenService = tokenService;
         _userRepository = userRepository;
