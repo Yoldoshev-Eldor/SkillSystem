@@ -44,6 +44,7 @@ namespace SkillSystem.Api
             app.MapAuthEndpoints();
             app.MapAdminEndpoints();
             app.MapSkillEndpoints();
+            app.MapRoleEndpoints();
 
 
             app.Run();

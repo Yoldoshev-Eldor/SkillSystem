@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkillSystem.Aplication.Validators.UserValidator;
+namespace SkillSystem.Aplication.FluentValidation;
 
-public class UserLoginValidators : AbstractValidator<UserLogInDto>
+public class UserLogInValidators : AbstractValidator<UserLogInDto>
 {
-    public UserLoginValidators()
+    public UserLogInValidators()
     {
         RuleFor(x => x.UserName)
           .NotEmpty()
@@ -25,4 +25,3 @@ public class UserLoginValidators : AbstractValidator<UserLogInDto>
             .WithMessage("Password must be between 8 and 20 characters long");
     }
 }
-

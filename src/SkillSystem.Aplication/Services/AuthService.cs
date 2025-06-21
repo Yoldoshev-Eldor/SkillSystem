@@ -48,7 +48,8 @@ public class AuthService : IAuthService
             Password = tupleFromHasher.Hash,
             Salt = tupleFromHasher.Salt,
         };
-        user.RoleId = await _roleRepository.GetRoleIdAsync("User");
+        
+        user.RoleId = await _roleRepository.GetRoleByNameAsync("User");
         return await _userRepository.InsertAsync(user);
     }
     public async Task<LogInResponseDto> LogInAsync(UserLogInDto userLoginDto)
