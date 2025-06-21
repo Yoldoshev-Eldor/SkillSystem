@@ -14,7 +14,6 @@ public class SkillCreateDtoValidator : AbstractValidator<SkillCreateDto>
         RuleFor(x => x.Level)
             .IsInEnum().WithMessage("Noto‘g‘ri skill darajasi tanlandi.");
 
-        RuleFor(x => x.UserId)
-            .GreaterThan(0).WithMessage("UserId 0 dan katta bo‘lishi kerak.");
+      
     }
 }
