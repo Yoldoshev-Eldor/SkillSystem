@@ -11,7 +11,6 @@ public static class MapService
         {
             Name = dto.Name,
             Description = dto.Description,
-            UserId = dto.UserId,
             Level = (SkillLevel)SkillLevelDto.NotSet,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = null
