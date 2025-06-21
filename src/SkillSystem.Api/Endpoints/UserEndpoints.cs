@@ -22,26 +22,6 @@ public static class UserEndpoints
         .WithName("GetUserById")
         .Produces<UserGetDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
-        group.MapPost("/", async (UserCreateDto userCreateDto, IUserService userService) =>
-        {
-            var userId = await userService.CreateAsync(userCreateDto);
-            return Results.Created($"/api/users/{userId}", new { UserId = userId });
-        })
-        .WithName("CreateUser")
-        .Produces<long>(StatusCodes.Status201Created);
        
-        group.MapDelete("/{id:long}", async (long id, IUserService userService) =>
-        {
-            var user = await userService.GetByIdAsync(id);
-            if (user == null)
-            {
-                return Results.NotFound();
-            }
-            await userService.DeleteAsync(user);
-            return Results.NoContent();
-        })
-        .WithName("DeleteUser")
-        .Produces(StatusCodes.Status204NoContent)
-        .Produces(StatusCodes.Status404NotFound);
     }
 }
