@@ -77,4 +77,15 @@ public class UserService : IUserService
         var userDto = MapService.MapUserToUserDto(user);
         return userDto;
     }
+
+    public async Task<UserGetDto> GetByUserNameAsync(string userName)
+    {
+        var user = await _userRepository.SelectByUserNameAsync(userName);
+        if (user == null)
+        {
+            throw new EntityNotFoundException($"User with username '{userName}' not found.");
+        }
+        var userDto = MapService.MapUserToUserDto(user);
+        return userDto;
+    }
 }
