@@ -17,7 +17,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Password).IsRequired();
         builder.Property(u => u.PhoneNumber).HasMaxLength(50);
         builder.Property(u => u.Salt).IsRequired();
-        builder.Property(u => u.Role).IsRequired();
+        builder.Property(u => u.URole).IsRequired();
 
         builder.HasMany(u => u.Skills)
                .WithOne(s => s.User)
