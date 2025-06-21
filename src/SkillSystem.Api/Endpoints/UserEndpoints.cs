@@ -6,7 +6,7 @@ namespace SkillSystem.Api.Endpoints;
 
 public static class UserEndpoints
 {
-    public static void MapUserEndpoints(WebApplication app)
+    public static void MapUserEndpoints(this WebApplication app)
     {
         var group = app.MapGroup("/api/users");
         group.MapGet("/", async (IUserService userService) =>
