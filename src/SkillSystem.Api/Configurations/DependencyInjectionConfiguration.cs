@@ -16,7 +16,7 @@ namespace SkillSystem.Api.Configurations
             builder.Services.AddScoped<ISkillService, SkillService>();
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
-            //builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
             builder.Services.AddScoped<IValidator<SkillCreateDto>, SkillCreateDtoValidator>();
             builder.Services.AddScoped<IValidator<SkillUpdateDto>, SkillUpdateDtoValidator>();
