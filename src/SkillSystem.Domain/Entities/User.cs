@@ -11,7 +11,7 @@ public class User
     public string PhoneNumber { get; set; }
     public string Salt { get; set; }
     public long RoleId { get; set; }
-    public UserRole UserRole { get; set; }
+    public UserRole Role { get; set; }
 
     public ICollection<RefreshToken> RefreshTokens { get; set; }
     public ICollection<Skill> Skills { get; set; }
