@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SkillSystem.Domain.Entities;
 
-namespace SkillSystem.Infrastructura.Persistence.Configurations;
-
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
@@ -17,7 +15,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Password).IsRequired();
         builder.Property(u => u.PhoneNumber).HasMaxLength(50);
         builder.Property(u => u.Salt).IsRequired();
-        builder.Property(u => u.URole).IsRequired();
+
+        builder.HasOne(u => u.URole) // 👈 to‘g‘ri navigation
+               .WithMany(r => r.Users)
+               .HasForeignKey(u => u.RoleId)
+               .IsRequired();
 
         builder.HasMany(u => u.Skills)
                .WithOne(s => s.User)

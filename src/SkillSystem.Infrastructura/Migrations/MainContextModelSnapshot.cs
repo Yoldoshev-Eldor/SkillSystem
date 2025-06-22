@@ -8,7 +8,7 @@ using SkillSystem.Infrastructura.Persistence;
 
 #nullable disable
 
-namespace SkillSystem.Infrastructura.Persistence.Migrations
+namespace SkillSystem.Infrastructura.Migrations
 {
     [DbContext(typeof(MainContext))]
     partial class MainContextModelSnapshot : ModelSnapshot
@@ -118,8 +118,8 @@ namespace SkillSystem.Infrastructura.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Salt")
                         .IsRequired()
@@ -132,7 +132,31 @@ namespace SkillSystem.Infrastructura.Persistence.Migrations
 
                     b.HasKey("UserId");
 
+                    b.HasIndex("RoleId");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("SkillSystem.Domain.Entities.UserRole", b =>
+                {
+                    b.Property<long>("RoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("RoleId"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("RoleId");
+
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("SkillSystem.Domain.Entities.RefreshToken", b =>
@@ -159,9 +183,25 @@ namespace SkillSystem.Infrastructura.Persistence.Migrations
 
             modelBuilder.Entity("SkillSystem.Domain.Entities.User", b =>
                 {
+                    b.HasOne("SkillSystem.Domain.Entities.UserRole", "URole")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("URole");
+                });
+
+            modelBuilder.Entity("SkillSystem.Domain.Entities.User", b =>
+                {
                     b.Navigation("RefreshTokens");
 
                     b.Navigation("Skills");
+                });
+
+            modelBuilder.Entity("SkillSystem.Domain.Entities.UserRole", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }
